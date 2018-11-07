@@ -65,7 +65,7 @@ EOF'
             read dbusr
             echo -e "${green}What is the mysql password? ${reset} "
             read dbpass
-            wp core download --version=latest --locale=en_US --force
+            wp core download --locale=en_US --force
             wp core config --dbname=$dbname --dbuser=$dbusr --dbpass=$dbpass --dbhost=localhost
 
         else
@@ -83,7 +83,7 @@ EOF'
 
                 $MYSQL -u$mysqlusr -p$mysqlpass -e "$SQL"
 
-                wp core download --version=latest --locale=en_US --force
+                wp core download --locale=en_US --force
                 wp core config --dbname=$dbusrentry --dbuser=$mysqlusr --dbpass=$mysqlpass --dbhost=localhost
                 wp db drop --yes
                 wp db create
