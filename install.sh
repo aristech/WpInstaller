@@ -6,7 +6,7 @@ blue=$(tput setaf 4)
 reset=$(tput sgr0)
 ip_address="127.0.0.1"
 mysqlusr="root"
-mysqlpass="b@st@rd77"
+mysqlpass="*****"
 macuser=$($USER)
 echo -e "${green}Hello, I will create a vitual host in your apache server with your desired name, ex: [yourdomain.local]${reset}"
 read ans
