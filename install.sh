@@ -6,7 +6,7 @@ blue=$(tput setaf 4)
 reset=$(tput sgr0)
 ip_address="127.0.0.1"
 mysqlusr="root"
-mysqlpass="*******"
+mysqlpass="b@st@rd77"
 macuser=$($USER)
 echo -e "${green}Hello, I will create a vitual host in your apache server with your desired name, ex: [yourdomain.local]${reset}"
 read ans
@@ -27,11 +27,11 @@ if [ ! -z "$ans" ]; then
 ServerAdmin admin@'$ans'
 ServerName '$ans'
 ServerAlias www.'$ans'
-DocumentRoot /Users/'macuser'/Sites/'$ans'
-ErrorLog /Users/'macuser'/Sites/'$ans'/error.log
-CustomLog /Users/'macuser'/Sites/'$ans'/access.log combined
+DocumentRoot /Users/'$macuser'/Sites/'$ans'
+ErrorLog /Users/'$macuser'/Sites/'$ans'/error.log
+CustomLog /Users/'$macuser'/Sites/'$ans'/access.log combined
 </VirtualHost>
-<Directory "/Users/'macuser'/Sites/'$ans'">
+<Directory "/Users/'$macuser'/Sites/'$ans'">
 AllowOverride All
 Require all granted
 </Directory>
