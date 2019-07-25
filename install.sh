@@ -5,12 +5,12 @@ green=$(tput setaf 2)
 blue=$(tput setaf 4)
 reset=$(tput sgr0)
 ip_address="127.0.0.1"
-mysqlusr="phpmyadmin"
+mysqlusr="root"
 mysqlpass="root"
 user=$USER
 unameOut="$(uname -s)"
 case "${unameOut}" in
-    Darwin*)    machine=Mac;;
+    Darwin*)    machine=Darwin;;
     Linux*)     machine=Linux;;
     CYGWIN*)    machine=Cygwin;;
     *)          machine="UNKNOWN:${unameOut}"
@@ -32,11 +32,11 @@ then
 ServerAdmin admin@'$ans'
 ServerName '$ans'
 ServerAlias www.'$ans'
-DocumentRoot /Users/'$macuser'/Sites/'$ans'
-ErrorLog /Users/'$macuser'/Sites/'$ans'/error.log
-CustomLog /Users/'$macuser'/Sites/'$ans'/access.log combined
+DocumentRoot /Users/'$user'/Sites/'$ans'
+ErrorLog /Users/'$user'/Sites/'$ans'/error.log
+CustomLog /Users/'$user'/Sites/'$ans'/access.log combined
 </VirtualHost>
-<Directory "/Users/'$macuser'/Sites/'$ans'">
+<Directory "/Users/'$user'/Sites/'$ans'">
 AllowOverride All
 Require all granted
 </Directory>
@@ -253,7 +253,7 @@ elif [ ${machine} == "CYGWIN" ]
 then
    echo "We don't support CYGWIN yet!"
 else
-   echo "We don't support your macchine yet!"
+   echo "We don't support your macchine yet!${machine}"
 fi
 
 
