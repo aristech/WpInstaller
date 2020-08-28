@@ -43,6 +43,7 @@ Require all granted
 
 EOF'
         fi
+        sudo a2ensite $ans
         sudo apachectl restart
         # find existing instances in the host file and save the line numbers
         matches_in_hosts="$(grep -n $ans /etc/hosts | cut -f1 -d:)"
@@ -133,27 +134,24 @@ then
     echo -e "${blue}Hello ${user}, I will create a vitual host on your apache server on path: /var/www/[yourdomain.test]/public_html \n ${green}Enter your desired name, ex: [yourdomain.test]${reset}"
     read ans
     if [ ! -z "$ans" ]; then
-        echo -e "${green}Please wait while /var/www/${ans}/public_html is created and enter your password if prompted"
-        sudo mkdir -p /var/www/$ans/public_html
-        sudo chown -R $USER:$USER /var/www/$ans/public_html
-        sudo usermod -aG www-data $USER
-        sudo addgroup www-data
-        sudo chmod -R 755 /var/www/$ans/public_html
+        echo -e "${green}Please wait while /srv/http/${ans}/public_html is created and enter your password if prompted"
+        sudo mkdir -p /srv/http/$ans/public_html
+        sudo chown -R $user:http /srv/http/$ans
+        sudo chmod -R 755 /srv/http/$ans/public_html
 
-        sudo bash -c 'cat << EOF > /etc/apache2/sites-available/'$ans'.conf
+        sudo bash -c 'cat << EOF > /etc/httpd/conf/sites-available/'$ans'.conf
 <VirtualHost *:80>
 ServerAdmin admin@'$ans'
 ServerName '$ans'
 ServerAlias www.'$ans'
-DocumentRoot /var/www/'$ans'/public_html
-ErrorLog ${APACHE_LOG_DIR}/error.log
-CustomLog ${APACHE_LOG_DIR}/access.log combined
+DocumentRoot /srv/http/'$ans'/public_html
+ErrorLog /srv/http/'$ans'/error.log
 </VirtualHost>
 EOF'
-
-        sudo a2ensite $ans.conf
+        echo -e "${green}Enable site ${ans}...${reset}\n "
+        a2ensite $ans
         echo -e "${green}restarting apache...${reset}\n "
-        sudo service apache2 restart
+        sudo systemctl restart httpd
         # find existing instances in the host file and save the line numbers
         matches_in_hosts="$(grep -n $ans /etc/hosts | cut -f1 -d:)"
         host_entry="${ip_address} ${ans}"
@@ -172,7 +170,7 @@ EOF'
     read answer
     if [ "$answer" != "${answer#[Yy]}" ]; then
         frontDir=$(pwd)
-        cd /var/www/$ans/public_html
+        cd /srv/http/$ans/public_html
         wpDir=$(pwd)
         # Download and install wp-cli
         wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
